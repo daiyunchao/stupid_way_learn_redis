@@ -37,6 +37,12 @@ lrange user 0 -1
 
 ```
 
+**rpush 添加一个或多个到list的尾部(右边)**
+和`lpush`类似
+
+**rpushx将一个值插入到列表的尾部**
+和`lpushx`类似
+
 **linsert 插入值到列表中**
 `linsert key_name before|after old_value new_value`
 列表的元素前或者后插入元素。当指定元素不存在于列表中时，不执行任何操作。
@@ -165,3 +171,100 @@ BLPOP list1 100
 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止
 和`blpop`类似,但`blpop`是从第一个开始(左边) 该方法是从(最后一个)右开始
 
+lrem移除元素
+根据参数 COUNT 的值，移除列表中与参数 VALUE 相等的元素
+count > 0 : 从表头开始向表尾搜索，移除与 VALUE 相等的元素，数量为 COUNT 。
+count < 0 : 从表尾开始向表头搜索，移除与 VALUE 相等的元素，数量为 COUNT 的绝对值。
+count = 0 : 移除表中所有与 VALUE 相等的值。
+被移除元素的数量。 列表不存在时返回 0
+`lrem key_name count value`
+```redis
+lpush zhangsan lisi wangwu zhangsan lisi
+5
+
+lrange user 0 -1
+1) "lisi"
+2) "zhangsan"
+3) "wangwu"
+4) "lisi"
+5) "zhangsan"
+
+lrem user 2 zhangsan
+2
+
+lrange user 0 -1
+1) "lisi"
+2) "wangwu"
+3) "lisi"
+
+```
+
+**ltrim从左边裁剪元素**
+list保留 指定的元素列表
+`ltrim key_name start_index end_index`
+下标 0 表示列表的第一个元素，以 1 表示列表的第二个元素，以此类推。 你也可以使用负数下标，以 -1 表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推
+```redis
+lpush user zhangsan lisi wangwu
+3
+
+lrange user 0 -1
+1) "wangwu"
+2) "lisi"
+3) "zhangsan"
+
+ltrim user 0 1
+ok
+
+lrange user  -1
+1) "wangwu"
+2) "lisi"
+
+```
+
+**rpop 删除列表中的最后一个元素**
+返回被移除的元素
+如果列表不存在则返回 nil
+`rpop key_name`
+```redis
+lpush user zhangsan lisi wangwu
+3
+
+lrange user 0 -1
+1) "wangwu"
+2) "lisi"
+3) "zhangsan"
+
+rpop user
+zhangsan
+
+lrange user 0 -1
+1) "wangwu"
+2) "lisi"
+```
+
+**rpoplpush 移除列表的最后一个元素，并将该元素添加到另一个列表(的开始位置[因为使用的是lpush])并返回**
+`rpoplpush source_key_name target_key_name`
+```redis
+lpush user1 zhangsan lisi wangwu
+3
+
+lrange user1 0 -1
+1) "wangwu"
+2) "lisi"
+3) "zhangsan"
+
+lpush user2 wangermazi
+1
+
+rpoplpush user1 user2
+zhangsan
+
+lrange user1 0 -1
+1) "wangwu"
+2) "lisi"
+
+lrange user2 0 -1
+1) "zhangsan"
+2) "wangermazi"
+
+```
