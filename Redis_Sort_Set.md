@@ -37,6 +37,12 @@ zrange user 0 -1 withscores
 
 ```
 
+**zrevrange 获取sort_set中的全部成员(按照score 由大到小)**
+和`zrange`相同,只是排序方式是反的
+其中成员的位置按分数值递减(从大到小)来排列。
+具有相同分数值的成员按字典序的逆序(reverse lexicographical order)排列。
+`zrevrange key_name start_index stop_index`
+
 **zcard 获取sort_set中的成员数量**
 `zcard key_name`
 ```redis
@@ -130,6 +136,10 @@ zrangebyscore user (1 3
 
 ```
 
+**zrevrangebyscore 通过score获取返回数据(反序)**
+同`zrangebyscore`只是顺序是反的
+
+
 **zrank 获取store_set中的值对应的index**
 `zrank key_name value`
 
@@ -148,5 +158,111 @@ zrank user lisi
 
 ```
 
+**zrevrank 获取store_set中的值对应的index(反序)**
+同`zrank`只是顺序是反的
+`zrevrank key_name value`
+
+```redis
+zadd user 1 zhangsan 2 lisi 30 wangwu
+3
+
+zrank user wangwu
+2
+
+zrevrank user wangwu
+0
+
+zrank user zhangsan
+0
+
+zrevrank user zhangsan 
+2
 
 
+zrank user lisi
+1
+
+zrevrank user lisi
+1
+
+```
+
+**zrem移除sort_set中的一个或多个成员**
+`zrem key_name value1 value2`
+```redis
+zadd user 1 zhangsan 2 lisi 3 wanagwu
+3
+
+zrange user 0 -1
+1) "zhangsan"
+2) "lisi"
+3) "wangwu"
+
+zrem user zhangsan
+1
+
+zrange user 0 -1
+1) "lisi"
+2) "wangwu"
+
+```
+**zremrangebyrank移除start_index和stop_index之间的全部元素(包括start_index和stop_index)**
+`zremrangebyrank key_name start_index stop_index`
+```redis
+zadd user 1 zhangsan 2 lisi 3 wangwu
+3
+
+zremrangebyrank 0 1
+2
+
+zrange user 0 -1 withscores
+1) "wangwu"
+2) 3.0
+
+```
+
+**zremrangebyscore移除start_score和stop_score之间的全部元素(包含start_score和stop_score)**
+`zremrangebyscore key_name start_score stop_socre`
+```redis
+zadd user 1 zhangsan 2 lisi 3 wangwu
+3
+
+zremrangebyscore user 0 1
+1
+
+zrange user 0 -1 withscores
+1) "lisi"
+2) 2.0
+3) "wangwu"
+4) 3.0
+
+```
+
+**zscore获取sort_set中指定元素的score**
+`zscore key_name value`
+```redis
+zadd user 1 zhangsan 2 lisi 3 wangwu
+3
+
+zscore user zhangsan
+1.0
+
+```
+
+**zunionstore 找到并集并存储到另外的sort_set中**
+(不太理解)
+
+**zscan迭代sort_set中的元素**
+`不太理解cursor参数`
+`zscan key cursor [MATCH pattern] [COUNT count]`
+```redis
+zadd user 1 zhangsan 2 lisi 3 wangwu
+3
+
+zscan user 0  match  z*
+1) "0"
+2) 1) "zhangsan"
+2) 1.0
+
+
+```

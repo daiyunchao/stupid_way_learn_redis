@@ -219,7 +219,7 @@ sunionstore user user_2 my_user
 sadd user zhangsan lisi wangwu zhaoliu
 4
 
-sscan user 0 z*
+sscan user 0 match z*
 1) "0"
 2) 1) "zhangsan"
 2) "zhaoliu"
