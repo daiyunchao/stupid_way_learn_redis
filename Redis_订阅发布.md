@@ -65,3 +65,34 @@ PUBSUB CHANNELS
 (empty list or set)
 ```
 
+例子(来自[菜鸟教程](http://www.runoob.com/redis/redis-pub-sub.html)):
+
+客户端订阅了一个频道:
+```redis
+SUBSCRIBE redisChat
+Reading messages... (press Ctrl-C to quit)
+1) "subscribe"
+2) "redisChat"
+3) (integer) 1
+```
+发布消息:
+
+```redis
+PUBLISH redisChat "Redis is a great caching technique"
+
+(integer) 1
+
+PUBLISH redisChat "Learn redis by runoob.com"
+
+(integer) 1
+
+
+# 订阅者的客户端会显示如下消息
+1) "message"
+2) "redisChat"
+3) "Redis is a great caching technique"
+1) "message"
+2) "redisChat"
+3) "Learn redis by runoob.com"
+
+```
