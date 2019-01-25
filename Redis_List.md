@@ -31,11 +31,6 @@ lrange user 0 -1
 3) "zhangsan"
 
 ```
-`lpush key_name value1 value2`
-如果 key 不存在，一个空列表会被创建并执行 LPUSH 操作。 当 key 存在但不是列表类型时，返回一个错误
-```redis
-
-```
 
 **rpush 添加一个或多个到list的尾部(右边)**
 和`lpush`类似

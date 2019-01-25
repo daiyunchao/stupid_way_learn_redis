@@ -147,4 +147,120 @@ decrby为数值类型的值-指定的数值
 
 
 
+#### `Hash部分`:
+
+hset 设置hash的值
+`hset key_name field1 value1`
+
+hmset 批量设置hash 的值
+`hmset key_name field1 field1_value field2 field2_value`
+
+hsetnx只有字段不存在时才能设置成功
+`hsetnx key_name field value`
+
+hget 获取field中的值
+`hget key_name field`
+
+hmget 获取多个key对应的值
+`hmget key_name field1 field2`
+
+hgetall 获取对应key的全部field和field的value
+`hgetall key_name`
+```redis
+hgetall zhangsan
+1) "name"
+2) "zhangsan"
+3) "age"
+4) "18"
+```
+
+hvals获取hash中的全部的值
+`hvals key_name`
+```redis
+hvals zhangsan
+1) "zhangsan"
+2) "18"
+
+```
+
+hlen获取hash中的key数量
+`hlen key_name`
+
+hexists 检查key是否存在
+`hexists key_name field`
+
+
+hdel删除hash中的一个key或多个key
+`hdel key_name field1 field2`
+
+
+#### `List部分`:
+
+lpush添加一个或多个到list中的头部
+`lpush key_name value1 value2`
+
+
+lpushx 向一个已存在的key中插入值,并放到头部
+`lpushx key_name value1`
+
+rpush 添加一个或多个到list的尾部(右边)
+`lpush`类似
+
+rpushx将一个值插入到列表的尾部
+`lpushx`类似
+
+linsert 插入指定顺序的值到列表中
+`linsert key_name before|after old_value new_value`
+
+llen 获取list的长度
+`llen key_name`
+
+lrange 获取list中指定范围内的value
+`lrange key_name start_num end_num`
+`lrange key_name 0 -1` 获取全部元素
+
+lindex 通过索引获取列表中的元素
+`lindex key_name index_num`
+```redis
+lpush user zhangsan lisi
+2
+
+lindex user 0
+lisi
+
+lindex user 1
+zhangsan
+
+lindex user -1
+zhangsan
+
+```
+
+lpop 移除一个元素并返回
+`lpop key_name`
+
+ltrim从左边裁剪元素
+`ltrim key_name start_index end_index`
+
+```redis
+lpush user zhangsan lisi wangwu
+3
+
+lrange user 0 -1
+1) "wangwu"
+2) "lisi"
+3) "zhangsan"
+
+ltrim user 0 1
+ok
+
+lrange user  -1
+1) "wangwu"
+2) "lisi"
+
+```
+
+rpop 删除列表中的最后一个元素
+`rpop key_name`
+
 
