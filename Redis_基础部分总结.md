@@ -67,7 +67,7 @@ type返回key的数据类型
 `type key`
 none(key不存在) string(字符串) list(列表) set(集合) zset(有序集合) hash(哈希表)
 
-#### `String部分`:
+### `String部分`:
 
 存储一个string
 `set key value`
@@ -147,7 +147,7 @@ decrby为数值类型的值-指定的数值
 
 
 
-#### `Hash部分`:
+### `Hash部分`:
 
 hset 设置hash的值
 `hset key_name field1 value1`
@@ -194,7 +194,7 @@ hdel删除hash中的一个key或多个key
 `hdel key_name field1 field2`
 
 
-#### `List部分`:
+### `List部分`:
 
 lpush添加一个或多个到list中的头部
 `lpush key_name value1 value2`
@@ -264,3 +264,136 @@ rpop 删除列表中的最后一个元素
 `rpop key_name`
 
 
+### Set
+
+sadd添加一个或多个值到set中
+`sadd key_name value1 value2`
+
+smembers 获取成员列表
+`smembers key_name`
+
+sismember 判断是否是一个set的成员
+`sismember key_name value`
+
+scard获取成员数量
+`scard key_name`
+
+sdiff比较两个set中的差别
+理解: 查询第一个set中出现而第二个set中没出现的值
+如果key不存在,则认为该set是空
+`sdiff key_name_1 key_name_2`
+```redis
+sadd user_1 zhangsan lisi wangwu
+3
+
+sadd user_2 lisi zhaoliu
+2
+
+sdiff user_1 user_2
+1) "zhangsan"
+2) "wangwu"
+
+```
+
+sinter获取两个(多个)set的交集
+`sinter key_name_1 key_name_2`
+
+spop 删除set中的一个或多个元素并返回
+`spop key_name [count]`
+
+srandmember 随机返回一个或多个set中的元素
+`srandmember key_name [count]`
+
+srem 移除set中的一个或多个元素
+`srem key_name member1 member2`
+
+sunion合区两个或多个set的并集
+`sunion key_name key_name_2`
+
+sunionstore 找到并集并存储到另外的set中
+`sunionstore key_name key_name2 key_name3`
+
+
+
+### Sort_Set:
+有序set,成员不能重复 每一个元素都有一个double类型的score,用此score进行排序
+
+zadd 添加一个或多个sort_set成员
+`zadd key_name score value1 value2`
+
+zrange 获取sort_set的成员
+成员会按照score的大小进行排序
+可选项`WITHSCORES` 如果有该选项,则会返回value的score到列表中
+`zrange key_name start_number stop_number [WITHSCORES]`
+
+zrevrange 获取sort_set中的全部成员(按照score 由大到小)
+和`zrange`相同,只是排序方式是反的
+`zrevrange key_name start_index stop_index`
+
+zcard 获取sort_set中的成员数量
+`zcard key_name`
+
+zcount获取sort_set中指定区间score内的成员数量
+`zcount key_name start_score stop_score`
+
+zinterstore 获取两个或多个sort_set并将结果存储到一个新的sort_set中
+`zinertstore new_store_key_name numberkeys key_name_1 key_name_2`
+
+**zrangebyscore 通过score的值返回数据**
+`(` 大于   `)`小于 直接数值则为`>=`或`<=`
+`zrangebyscore key_name exp`
+```redis
+zadd user 1 zhangsan 2 lisi 3 wangwu
+3
+
+zrangebyscore user (1 3
+1) "lisi"
+2) "wangwu"
+
+```
+
+zrank 获取store_set中的值对应的index
+`zrank key_name value`
+
+zrem移除sort_set中的一个或多个成员
+`zrem key_name value1 value2`
+
+zscore获取sort_set中指定元素的score
+zscore key_name value
+
+
+### 事务:
+> 不像数据库事务没有数据事务的原子性
+> 特点:批量操作在发送 EXEC 命令前被放入队列缓存,收到 EXEC 命令后进入事务执行，事务中任意命令执行失败，其余的命令依然被执行(非原子性).在事务执行过程，其他客户端提交的命令请求不会插入到事务执行命令序列中(保证顺序)
+
+
+multi 标记一个事务的开始
+`multi`
+
+exec执行批量任务
+`exec`
+
+discard取消事务,取消事务中的全部命令
+`discard`
+
+```redis
+multi
+ok
+
+set user zhangsan
+QUEUED
+
+set user_2 lisi
+QUEUED
+
+exec
+1) OK
+2) OK
+
+get user
+zhangsan 
+
+get user_2
+lisi
+
+```
