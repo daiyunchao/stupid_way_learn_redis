@@ -56,3 +56,6 @@
 
 ### 基础部分的总结:
 [点这里](https://github.com/daiyunchao/stupid_way_learn_redis/blob/master/Redis_%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86%E6%80%BB%E7%BB%93.md)
+
+### 在Nodejs中如何使用:
+[点这里](https://github.com/daiyunchao/stupid_way_learn_redis/blob/master/Redis_NodeJs%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Redis.md)
