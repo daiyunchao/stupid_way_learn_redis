@@ -59,3 +59,7 @@
 
 ### 在Nodejs中如何使用:
 [点这里](https://github.com/daiyunchao/stupid_way_learn_redis/blob/master/Redis_NodeJs%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Redis.md)
+
+
+### 基础部分完结
+
