@@ -63,3 +63,7 @@
 
 ### 基础部分完结
 
+
+### REDIS的持久化
+1. redis的持久化可分为两种方式 rdb 和aof
+我学习的文章是：https://juejin.im/post/5b70dfcf518825610f1f5c16 里面有比较详细的介绍
